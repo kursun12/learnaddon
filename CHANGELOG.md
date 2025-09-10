@@ -19,4 +19,3 @@
 - Learn queue utility with unit tests.
 
 - Added sample CSV template for MCQ import.
-- Bundled default question set and auto-load it on first run.
