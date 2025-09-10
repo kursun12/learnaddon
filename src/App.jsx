@@ -13,6 +13,7 @@ import './App.css';
 
 export default function App() {
   const [deck, setDeck] = useState(null);
+  const [decks, setDecks] = useState([]);
   const [view, setView] = useState('landing');
   const [theme, setTheme] = useState('dark');
 
@@ -23,14 +24,6 @@ export default function App() {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
-    const decks = loadDecks();
-    if (decks.length) {
-      setDeck(decks[0]);
-    } else {
-      try {
-        const builtIn = parseDeck(defaultCsv);
-        saveDeck(builtIn);
-        setDeck(builtIn);
       } catch (err) {
         console.error('Failed to load bundled deck', err);
       }
@@ -42,15 +35,19 @@ export default function App() {
       <h1>SC-200 Quiz</h1>
       {view === 'landing' && (
         <Landing
+          decks={decks}
           onImport={() => setView('import')}
-          hasDeck={!!deck}
-          onStart={() => setView('dashboard')}
+          onSelect={(d) => {
+            setDeck(d);
+            setView('dashboard');
+          }}
         />
       )}
       {view === 'import' && (
         <Importer
           onImported={(d) => {
             setDeck(d);
+            setDecks((ds) => [...ds, d]);
             setView('dashboard');
           }}
         />

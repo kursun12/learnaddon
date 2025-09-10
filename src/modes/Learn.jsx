@@ -15,10 +15,14 @@ export default function Learn({ deck }) {
     audioRef.current?.play();
   };
 
-  const handleCheck = useCallback(() => {
-    if (selected == null) return;
-    setResult(selected === current.correct);
-  }, [selected, current]);
+  const handleSelect = useCallback(
+    (i) => {
+      if (result != null) return;
+      setSelected(i);
+      setResult(i === current.correct);
+    },
+    [result, current]
+  );
 
   const handleNext = useCallback(() => {
     setQueue((q) => advanceLearnQueue(q, result));
@@ -31,11 +35,7 @@ export default function Learn({ deck }) {
       const idx = keyToIndex(e.key);
       if (result == null) {
         if (idx >= 0 && idx < current.options.length) {
-          setSelected(idx);
-        }
-        if (e.key === 'Enter' && selected != null) {
-          e.preventDefault();
-          handleCheck();
+          handleSelect(idx);
         }
       } else {
         if (e.key === 'Enter' || e.key === 'ArrowRight') {
@@ -46,7 +46,7 @@ export default function Learn({ deck }) {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [result, current, selected, handleCheck, handleNext]);
+  }, [result, current, handleSelect, handleNext]);
 
   if (!current) {
     return (
@@ -82,14 +82,21 @@ export default function Learn({ deck }) {
           <label
             key={i}
             className={`option ${selected === i ? 'selected' : ''} ${
-              result != null ? (i === current.correct ? 'correct' : selected === i ? 'incorrect' : '') : ''
+              result != null
+                ? i === current.correct
+                  ? 'correct'
+                  : selected === i
+                  ? 'incorrect'
+                  : ''
+                : ''
             }`}
+            onClick={() => handleSelect(i)}
           >
             <input
               type="radio"
               name="option"
               checked={selected === i}
-              onChange={() => setSelected(i)}
+              onChange={() => handleSelect(i)}
               disabled={result != null}
               style={{ display: 'none' }}
             />
@@ -97,9 +104,7 @@ export default function Learn({ deck }) {
           </label>
         ))}
       </form>
-      {result == null ? (
-        <button onClick={handleCheck} disabled={selected == null}>Check</button>
-      ) : (
+      {result != null && (
         <div>
           <p className="feedback">{result ? 'Correct!' : 'Incorrect.'}</p>
           {current.explanation && <p>{current.explanation}</p>}

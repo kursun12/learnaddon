@@ -4,3 +4,9 @@
   gap: 1rem;
   align-items: flex-start;
 }
+
+.deck-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
