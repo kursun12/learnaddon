@@ -24,19 +24,10 @@ export default function App() {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
-    let loaded = loadDecks();
-    if (!loaded.length) {
-      try {
-        const builtIn = parseDeck(defaultCsv);
-        builtIn.title = 'SC-200 Practice Deck';
-        saveDeck(builtIn);
-        loaded = [builtIn];
       } catch (err) {
         console.error('Failed to load bundled deck', err);
       }
     }
-    setDecks(loaded);
-    if (loaded.length) setDeck(loaded[0]);
   }, []);
 
   return (
