@@ -1,7 +1,7 @@
 # Backlog
 
 - Implement Learn mode with adaptive mastery tracking.
-- Enhance Test mode with additional question types and richer explanations review.
-- Enhance Flashcards with progress persistence.
-- Improve accessibility and add text-to-speech playback.
-- Importer UI for deck metadata (title/description) and file upload.
+- Expand Test mode with additional question types and richer explanations review.
+- Persist progress and add shuffle/randomization across modes.
+- Improve accessibility and integrated text-to-speech playback.
+- Add metadata fields and file upload to importer.
