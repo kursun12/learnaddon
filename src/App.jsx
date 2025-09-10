@@ -6,7 +6,9 @@ import Learn from './modes/Learn.jsx';
 import Navbar from './ui/Navbar.jsx';
 import Landing from './ui/Landing.jsx';
 import Dashboard from './ui/Dashboard.jsx';
-import { loadDecks } from './state/deckStore.js';
+import { loadDecks, saveDeck } from './state/deckStore.js';
+import { parseDeck } from './util/parseDeck.js';
+import defaultCsv from '../data/questions.csv?raw';
 import './App.css';
 
 export default function App() {
@@ -22,7 +24,17 @@ export default function App() {
 
   useEffect(() => {
     const decks = loadDecks();
-    if (decks.length) setDeck(decks[0]);
+    if (decks.length) {
+      setDeck(decks[0]);
+    } else {
+      try {
+        const builtIn = parseDeck(defaultCsv);
+        saveDeck(builtIn);
+        setDeck(builtIn);
+      } catch (err) {
+        console.error('Failed to load bundled deck', err);
+      }
+    }
   }, []);
 
   return (
