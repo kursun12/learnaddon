@@ -15,11 +15,23 @@ test('parses valid deck', () => {
 });
 
 test('throws on invalid json', () => {
-  expect(() => parseDeck('not json')).toThrow('Invalid JSON');
+  expect(() => parseDeck('{not json}')).toThrow('Invalid JSON');
 });
 
 test('throws on missing title', () => {
   const bad = { ...sample };
   delete bad.title;
   expect(() => parseDeck(JSON.stringify(bad))).toThrow('Deck title missing');
+});
+
+test('parses CSV deck', () => {
+  const csv = 'id,question,optionA,optionB,correct\n1,Two?,Yes,No,A';
+  const deck = parseDeck(csv);
+  expect(deck.cards[0].question).toBe('Two?');
+  expect(deck.cards[0].correct).toBe(0);
+});
+
+test('CSV missing column throws', () => {
+  const csv = 'id,optionA,correct\n1,Yes,A';
+  expect(() => parseDeck(csv)).toThrow('Missing required column: question');
 });

@@ -20,9 +20,9 @@ export default function Importer({ onImported }) {
 
   return (
     <div>
-      <h2>Import Deck (JSON)</h2>
+      <h2>Import Deck (JSON or CSV)</h2>
       <textarea
-        aria-label="Deck JSON"
+        aria-label="Deck JSON or CSV"
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={10}
