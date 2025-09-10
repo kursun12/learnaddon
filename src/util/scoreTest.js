@@ -12,3 +12,13 @@ export function scoreTest(deck, responses) {
   const correct = results.filter(Boolean).length;
   return { correct, total, results };
 }
+
+/**
+ * Return cards answered incorrectly.
+ * @param {{correct: number}[]} cards
+ * @param {number[]} responses
+ * @returns {{correct: number}[]}
+ */
+export function getIncorrectCards(cards, responses) {
+  return cards.filter((card, i) => responses[i] !== card.correct);
+}

@@ -1,22 +1,54 @@
 import React, { useState } from 'react';
-import { scoreTest } from '../util/scoreTest.js';
+import { scoreTest, getIncorrectCards } from '../util/scoreTest.js';
 
 export default function Test({ deck }) {
+  const [cards, setCards] = useState(deck.cards);
   const [index, setIndex] = useState(0);
   const [responses, setResponses] = useState([]);
   const [selected, setSelected] = useState(null);
   const [checked, setChecked] = useState(false);
 
-  const card = deck.cards[index];
+  const card = cards[index];
 
-  if (index >= deck.cards.length) {
-    const summary = scoreTest(deck, responses);
+  if (index >= cards.length) {
+    const summary = scoreTest({ cards }, responses);
+    const incorrect = getIncorrectCards(cards, responses);
+
+    const handleRetake = () => {
+      if (!incorrect.length) return;
+      setCards(incorrect);
+      setIndex(0);
+      setResponses([]);
+      setSelected(null);
+      setChecked(false);
+    };
+
     return (
       <div>
         <h2>Results</h2>
         <p>
           Score: {summary.correct} / {summary.total}
         </p>
+        <ul>
+          {cards.map((c, i) => (
+            <li key={c.id || i}>
+              <p>{c.question}</p>
+              {responses[i] === c.correct ? (
+                <p>Correct</p>
+              ) : (
+                <p>
+                  Incorrect. Correct: {c.options[c.correct]}
+                </p>
+              )}
+              {c.explanation && <p>{c.explanation}</p>}
+            </li>
+          ))}
+        </ul>
+        {incorrect.length > 0 && (
+          <button onClick={handleRetake} aria-label="Retake incorrect questions">
+            Retake incorrect ({incorrect.length})
+          </button>
+        )}
       </div>
     );
   }
