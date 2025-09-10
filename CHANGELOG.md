@@ -5,3 +5,4 @@
 - Expand database schema to store options A-H, explanation, reference, image, and audio.
 - Update sample data and API tests to use new importer.
 - Added importer tests for JSON support and validation.
+- Migrate project to React + Vite front-end and drop legacy server tests.
