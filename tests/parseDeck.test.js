@@ -24,6 +24,12 @@ test('throws on missing title', () => {
   expect(() => parseDeck(JSON.stringify(bad))).toThrow('Deck title missing');
 });
 
+test('adds id when missing in JSON deck', () => {
+  const json = JSON.stringify({ title: 'Sample', cards: sample.cards });
+  const deck = parseDeck(json);
+  expect(deck.id).toBeTruthy();
+});
+
 test('parses CSV deck', () => {
   const csv = 'id,question,optionA,optionB,correct\n1,Two?,Yes,No,A';
   const deck = parseDeck(csv);

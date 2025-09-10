@@ -14,4 +14,7 @@
 - Importer tests cover explanation and reference fields.
 - Test mode keyboard handler stabilized with useCallback to avoid re-binding listeners.
 - Flashcards mode adds shuffle button and progress bar for better study tracking.
+- JSON importer assigns an ID when missing to ensure decks are storable.
+- Added adaptive Learn mode with keyboard support and mastery progress.
+- Learn queue utility with unit tests.
 
