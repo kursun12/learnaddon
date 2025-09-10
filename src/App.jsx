@@ -4,12 +4,14 @@ import Flashcards from './modes/Flashcards.jsx';
 import Test from './modes/Test.jsx';
 import Learn from './modes/Learn.jsx';
 import Navbar from './ui/Navbar.jsx';
+import Landing from './ui/Landing.jsx';
+import Dashboard from './ui/Dashboard.jsx';
 import { loadDecks } from './state/deckStore.js';
 import './App.css';
 
 export default function App() {
   const [deck, setDeck] = useState(null);
-  const [mode, setMode] = useState('flashcards');
+  const [view, setView] = useState('landing');
   const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
@@ -26,20 +28,44 @@ export default function App() {
   return (
     <main>
       <h1>SC-200 Quiz</h1>
-      {deck ? (
+      {view === 'landing' && (
+        <Landing
+          onImport={() => setView('import')}
+          hasDeck={!!deck}
+          onStart={() => setView('dashboard')}
+        />
+      )}
+      {view === 'import' && (
+        <Importer
+          onImported={(d) => {
+            setDeck(d);
+            setView('dashboard');
+          }}
+        />
+      )}
+      {view === 'dashboard' && deck && (
         <>
           <Navbar
-            mode={mode}
-            setMode={setMode}
+            mode={view}
+            setMode={setView}
             theme={theme}
             toggleTheme={toggleTheme}
           />
-          {mode === 'flashcards' && <Flashcards deck={deck} />}
-          {mode === 'learn' && <Learn deck={deck} />}
-          {mode === 'test' && <Test deck={deck} />}
+          <Dashboard deck={deck} onSelectMode={setView} />
         </>
-      ) : (
-        <Importer onImported={setDeck} />
+      )}
+      {['flashcards', 'learn', 'test'].includes(view) && deck && (
+        <>
+          <Navbar
+            mode={view}
+            setMode={setView}
+            theme={theme}
+            toggleTheme={toggleTheme}
+          />
+          {view === 'flashcards' && <Flashcards deck={deck} />}
+          {view === 'learn' && <Learn deck={deck} />}
+          {view === 'test' && <Test deck={deck} />}
+        </>
       )}
     </main>
   );
