@@ -8,3 +8,4 @@
 - Flashcards key handler effect runs once to avoid redundant bindings.
 - Basic multiple-choice Test mode with scoring.
 - Test mode now shows per-question results and supports retaking incorrect answers.
+- Flashcards now display optional images, audio playback, and explanations.
