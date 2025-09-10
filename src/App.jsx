@@ -24,9 +24,6 @@ export default function App() {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
-      } catch (err) {
-        console.error('Failed to load bundled deck', err);
-      }
     }
   }, []);
 
