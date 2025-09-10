@@ -55,6 +55,30 @@ test('parses optional image/audio fields', () => {
   expect(csvDeck.cards[0].audio).toBe('clip.mp3');
 });
 
+test('parses optional explanation and refs fields', () => {
+  const json = JSON.stringify({
+    ...sample,
+    cards: [
+      {
+        id: 'c1',
+        question: 'Q1',
+        options: ['A', 'B'],
+        correct: 0,
+        explanation: 'because',
+        refs: 'ref-link',
+      },
+    ],
+  });
+  const deck = parseDeck(json);
+  expect(deck.cards[0].explanation).toBe('because');
+  expect(deck.cards[0].refs).toBe('ref-link');
+
+  const csv = 'id,question,optionA,optionB,correct,explanation,refs\n1,Two?,Yes,No,A,why,ref';
+  const csvDeck = parseDeck(csv);
+  expect(csvDeck.cards[0].explanation).toBe('why');
+  expect(csvDeck.cards[0].refs).toBe('ref');
+});
+
 test('CSV missing column throws', () => {
   const csv = 'id,optionA,correct\n1,Yes,A';
   expect(() => parseDeck(csv)).toThrow('Missing required column: question');

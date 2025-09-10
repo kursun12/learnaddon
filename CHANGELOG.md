@@ -10,3 +10,6 @@
 - Test mode now shows per-question results and supports retaking incorrect answers.
 - Flashcards now display optional images, audio playback, and explanations.
 - Test mode gains keyboard shortcuts for option selection and navigation.
+- Test mode now displays optional images, audio playback, explanations, and references.
+- Importer tests cover explanation and reference fields.
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { scoreTest, getIncorrectCards } from '../util/scoreTest.js';
 import { keyToIndex } from '../util/keyToIndex.js';
 
@@ -8,6 +8,8 @@ export default function Test({ deck }) {
   const [responses, setResponses] = useState([]);
   const [selected, setSelected] = useState(null);
   const [checked, setChecked] = useState(false);
+
+  const audioRef = useRef(null);
 
   const card = cards[index];
 
@@ -41,7 +43,22 @@ export default function Test({ deck }) {
                   Incorrect. Correct: {c.options[c.correct]}
                 </p>
               )}
+              {c.image && (
+                <img
+                  src={c.image}
+                  alt={c.question}
+                  style={{ maxWidth: '100%', marginTop: '0.5rem' }}
+                />
+              )}
+              {c.audio && (
+                <audio
+                  controls
+                  src={c.audio}
+                  style={{ display: 'block', marginTop: '0.5rem' }}
+                />
+              )}
               {c.explanation && <p>{c.explanation}</p>}
+              {c.refs && <p>{c.refs}</p>}
             </li>
           ))}
         </ul>
@@ -66,6 +83,11 @@ export default function Test({ deck }) {
     setSelected(null);
     setChecked(false);
     setIndex((i) => i + 1);
+  };
+
+  const playAudio = (e) => {
+    e.stopPropagation();
+    audioRef.current?.play();
   };
 
   useEffect(() => {
@@ -94,6 +116,21 @@ export default function Test({ deck }) {
     <div>
       <h2>{deck.title} - Question {index + 1}</h2>
       <p>{card.question}</p>
+      {card.image && (
+        <img
+          src={card.image}
+          alt={card.question}
+          style={{ maxWidth: '100%', marginTop: '1rem' }}
+        />
+      )}
+      {card.audio && (
+        <div style={{ marginTop: '1rem' }}>
+          <audio ref={audioRef} src={card.audio} />
+          <button onClick={playAudio} aria-label="Play audio">
+            Play Audio
+          </button>
+        </div>
+      )}
       <form>
         {card.options.map((opt, i) => (
           <div key={i}>
@@ -118,6 +155,7 @@ export default function Test({ deck }) {
         <div>
           {selected === card.correct ? <p>Correct!</p> : <p>Incorrect.</p>}
           {card.explanation && <p>{card.explanation}</p>}
+          {card.refs && <p>{card.refs}</p>}
           <button onClick={handleNext}>Next</button>
         </div>
       )}
