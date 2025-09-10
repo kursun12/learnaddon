@@ -1,55 +1,16 @@
 const request = require('supertest');
+const path = require('path');
 const { initDB } = require('../server/db');
 const { createApp } = require('../server/app');
-const fs = require('fs');
-const path = require('path');
-const csv = require('csv-parser');
+const { loadData } = require('../scripts/loadData');
 
 let app;
 let db;
 
 beforeAll(async () => {
   db = await initDB();
-  await new Promise((resolve, reject) => {
-    db.run('DELETE FROM questions', (err) => {
-      if (err) reject(err); else resolve();
-    });
-  });
-
-  const insert = db.prepare(`INSERT INTO questions
-    (id, question, optionA, optionB, optionC, optionD, correct, explanation, reference)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-
-  const csvPath = path.join(__dirname, '..', 'data', 'questions.csv');
-
-  await new Promise((resolve, reject) => {
-    fs.createReadStream(csvPath)
-      .pipe(csv())
-      .on('data', (row) => {
-        insert.run([
-          row.id,
-          row.question,
-          row.optionA,
-          row.optionB,
-          row.optionC,
-          row.optionD,
-          row.correct,
-          row.explanation,
-          row.reference
-        ]);
-      })
-      .on('end', () => {
-        insert.finalize();
-        resolve();
-      })
-      .on('error', reject);
-  });
-
+  await loadData(db, path.join(__dirname, '..', 'data', 'questions.csv'));
   app = createApp(db);
-});
-
-afterAll(() => {
-  db.close();
 });
 
 test('GET /api/questions returns questions', async () => {
