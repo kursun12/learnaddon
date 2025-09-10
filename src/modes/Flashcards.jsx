@@ -29,7 +29,7 @@ export default function Flashcards({ deck }) {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  });
+  }, []);
 
   return (
     <div style={{ textAlign: 'center' }}>
