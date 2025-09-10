@@ -6,11 +6,14 @@ import Learn from './modes/Learn.jsx';
 import Navbar from './ui/Navbar.jsx';
 import Landing from './ui/Landing.jsx';
 import Dashboard from './ui/Dashboard.jsx';
-import { loadDecks } from './state/deckStore.js';
+import { loadDecks, saveDeck } from './state/deckStore.js';
+import { parseDeck } from './util/parseDeck.js';
+import defaultCsv from '../data/questions.csv?raw';
 import './App.css';
 
 export default function App() {
   const [deck, setDeck] = useState(null);
+  const [decks, setDecks] = useState([]);
   const [view, setView] = useState('landing');
   const [theme, setTheme] = useState('dark');
 
@@ -21,8 +24,19 @@ export default function App() {
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   useEffect(() => {
-    const decks = loadDecks();
-    if (decks.length) setDeck(decks[0]);
+    let loaded = loadDecks();
+    if (!loaded.length) {
+      try {
+        const builtIn = parseDeck(defaultCsv);
+        builtIn.title = 'SC-200 Practice Deck';
+        saveDeck(builtIn);
+        loaded = [builtIn];
+      } catch (err) {
+        console.error('Failed to load bundled deck', err);
+      }
+    }
+    setDecks(loaded);
+    if (loaded.length) setDeck(loaded[0]);
   }, []);
 
   return (
@@ -30,15 +44,19 @@ export default function App() {
       <h1>SC-200 Quiz</h1>
       {view === 'landing' && (
         <Landing
+          decks={decks}
           onImport={() => setView('import')}
-          hasDeck={!!deck}
-          onStart={() => setView('dashboard')}
+          onSelect={(d) => {
+            setDeck(d);
+            setView('dashboard');
+          }}
         />
       )}
       {view === 'import' && (
         <Importer
           onImported={(d) => {
             setDeck(d);
+            setDecks((ds) => [...ds, d]);
             setView('dashboard');
           }}
         />

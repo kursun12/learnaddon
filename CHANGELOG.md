@@ -18,3 +18,7 @@
 - Added adaptive Learn mode with keyboard support and mastery progress.
 - Learn queue utility with unit tests.
 
+- Added sample CSV template for MCQ import.
+- Bundled default question set and auto-load it on first run.
+- Default deck now appears on the landing page for one-click access.
+- Learn and Test modes show immediate feedback when an option is selected.
