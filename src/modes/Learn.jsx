@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { keyToIndex } from '../util/keyToIndex.js';
 import { advanceLearnQueue } from '../util/learnQueue.js';
+import './Learn.css';
 
 export default function Learn({ deck }) {
   const [queue, setQueue] = useState(deck.cards);
@@ -49,7 +50,7 @@ export default function Learn({ deck }) {
 
   if (!current) {
     return (
-      <div>
+      <div className="learn-container">
         <h2>{deck.title} - Mastered!</h2>
         <p>All cards mastered.</p>
       </div>
@@ -58,7 +59,7 @@ export default function Learn({ deck }) {
 
   const mastered = deck.cards.length - queue.length;
   return (
-    <div>
+    <div className="learn-container">
       <h2>
         {deck.title} - Learn ({mastered}/{deck.cards.length})
       </h2>
@@ -71,42 +72,43 @@ export default function Learn({ deck }) {
         />
       )}
       {current.audio && (
-        <div style={{ marginTop: '1rem' }}>
+        <div>
           <audio ref={audioRef} src={current.audio} />
-          <button onClick={playAudio} aria-label="Play audio">
-            Play Audio
-          </button>
+          <button onClick={playAudio} aria-label="Play audio">Play Audio</button>
         </div>
       )}
-      <form>
+      <form className="options">
         {current.options.map((opt, i) => (
-          <div key={i}>
-            <label>
-              <input
-                type="radio"
-                name="option"
-                checked={selected === i}
-                onChange={() => setSelected(i)}
-                disabled={result != null}
-              />
-              {opt}
-            </label>
-          </div>
+          <label
+            key={i}
+            className={`option ${selected === i ? 'selected' : ''} ${
+              result != null ? (i === current.correct ? 'correct' : selected === i ? 'incorrect' : '') : ''
+            }`}
+          >
+            <input
+              type="radio"
+              name="option"
+              checked={selected === i}
+              onChange={() => setSelected(i)}
+              disabled={result != null}
+              style={{ display: 'none' }}
+            />
+            {opt}
+          </label>
         ))}
       </form>
       {result == null ? (
-        <button onClick={handleCheck} disabled={selected == null}>
-          Check
-        </button>
+        <button onClick={handleCheck} disabled={selected == null}>Check</button>
       ) : (
         <div>
-          {result ? <p>Correct!</p> : <p>Incorrect.</p>}
+          <p className="feedback">{result ? 'Correct!' : 'Incorrect.'}</p>
           {current.explanation && <p>{current.explanation}</p>}
           {current.refs && <p>{current.refs}</p>}
           <button onClick={handleNext}>Next</button>
         </div>
       )}
       <progress
+        className="progress"
         value={mastered}
         max={deck.cards.length}
         aria-label="Mastery progress"
