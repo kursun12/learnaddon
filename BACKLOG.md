@@ -1,7 +1,7 @@
 # Backlog
 
-- Build Flashcards mode with keyboard navigation and progress tracking.
-- Create client-side CSV/JSON importer UI storing decks in localStorage.
+- Expand importer to handle CSV format and richer card fields (explanations, media).
 - Add Learn and Test modes with adaptive mastery tracking.
+- Enhance Flashcards with images/audio and progress persistence.
 - Improve accessibility and add text-to-speech playback.
 - Add unit/E2E tests for importer and study flows.
