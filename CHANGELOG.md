@@ -6,3 +6,4 @@
 - Utility `parseDeck` with unit tests.
 - `parseDeck` now supports CSV input and improved validation.
 - Flashcards key handler effect runs once to avoid redundant bindings.
+- Basic multiple-choice Test mode with scoring.
