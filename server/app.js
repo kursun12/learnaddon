@@ -3,6 +3,7 @@ const express = require('express');
 function createApp(db) {
   const app = express();
   app.use(express.json());
+  app.use(express.static('public'));
 
   app.get('/api/questions', (req, res) => {
     db.all('SELECT * FROM questions', [], (err, rows) => {
