@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Importer from './importer/Importer.jsx';
 import Flashcards from './modes/Flashcards.jsx';
 import Test from './modes/Test.jsx';
+import Learn from './modes/Learn.jsx';
 import { loadDecks } from './state/deckStore.js';
 
 export default function App() {
@@ -22,15 +23,16 @@ export default function App() {
             <button onClick={() => setMode('flashcards')} aria-label="Flashcards mode">
               Flashcards
             </button>
+            <button onClick={() => setMode('learn')} aria-label="Learn mode">
+              Learn
+            </button>
             <button onClick={() => setMode('test')} aria-label="Test mode">
               Test
             </button>
           </nav>
-          {mode === 'flashcards' ? (
-            <Flashcards deck={deck} />
-          ) : (
-            <Test deck={deck} />
-          )}
+          {mode === 'flashcards' && <Flashcards deck={deck} />}
+          {mode === 'learn' && <Learn deck={deck} />}
+          {mode === 'test' && <Test deck={deck} />}
         </div>
       ) : (
         <Importer onImported={setDeck} />

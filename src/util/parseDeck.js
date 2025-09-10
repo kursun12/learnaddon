@@ -39,6 +39,10 @@ function parseJSONDeck(json) {
   if (!data.title || typeof data.title !== 'string') throw new Error('Deck title missing');
   if (!Array.isArray(data.cards)) throw new Error('Deck cards missing');
 
+  if (!data.id) {
+    data.id = `deck-${Date.now()}`;
+  }
+
   data.cards.forEach((card, idx) => validateCard(card, idx));
   return data;
 }
