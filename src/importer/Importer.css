@@ -4,6 +4,10 @@
   gap: 1rem;
 }
 
+.importer input[type="file"] {
+  align-self: flex-start;
+}
+
 .importer textarea {
   width: 100%;
   border-radius: var(--radius);

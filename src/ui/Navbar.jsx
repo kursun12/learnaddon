@@ -1,8 +1,9 @@
 import React from 'react';
-import { FlipHorizontal2, BookOpen, CheckCircle2, Sun, Moon } from 'lucide-react';
+import { Home, FlipHorizontal2, BookOpen, CheckCircle2, Sun, Moon } from 'lucide-react';
 
 export default function Navbar({ mode, setMode, theme, toggleTheme }) {
   const items = [
+    { id: 'dashboard', label: 'Dashboard', icon: <Home size={18} /> },
     { id: 'flashcards', label: 'Flashcards', icon: <FlipHorizontal2 size={18} /> },
     { id: 'learn', label: 'Learn', icon: <BookOpen size={18} /> },
     { id: 'test', label: 'Test', icon: <CheckCircle2 size={18} /> },
