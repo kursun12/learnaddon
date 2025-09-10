@@ -72,13 +72,17 @@ export default function Test({ deck }) {
     );
   }
 
-  const handleCheck = useCallback(() => {
-    if (selected == null) return;
-    const nextResponses = [...responses];
-    nextResponses[index] = selected;
-    setResponses(nextResponses);
-    setChecked(true);
-  }, [index, responses, selected]);
+  const handleSelect = useCallback(
+    (i) => {
+      if (checked) return;
+      setSelected(i);
+      const nextResponses = [...responses];
+      nextResponses[index] = i;
+      setResponses(nextResponses);
+      setChecked(true);
+    },
+    [checked, responses, index]
+  );
 
   const handleNext = useCallback(() => {
     setSelected(null);
@@ -96,11 +100,7 @@ export default function Test({ deck }) {
       const idx = keyToIndex(e.key);
       if (!checked) {
         if (idx >= 0 && idx < card.options.length) {
-          setSelected(idx);
-        }
-        if (e.key === 'Enter' && selected != null) {
-          e.preventDefault();
-          handleCheck();
+          handleSelect(idx);
         }
       } else {
         if (e.key === 'Enter' || e.key === 'ArrowRight') {
@@ -111,7 +111,7 @@ export default function Test({ deck }) {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [checked, card.options.length, selected, handleCheck, handleNext]);
+  }, [checked, card.options.length, handleSelect, handleNext]);
 
   return (
     <div className="test-container">
@@ -135,14 +135,21 @@ export default function Test({ deck }) {
           <label
             key={i}
             className={`option ${selected === i ? 'selected' : ''} ${
-              checked ? (i === card.correct ? 'correct' : selected === i ? 'incorrect' : '') : ''
+              checked
+                ? i === card.correct
+                  ? 'correct'
+                  : selected === i
+                  ? 'incorrect'
+                  : ''
+                : ''
             }`}
+            onClick={() => handleSelect(i)}
           >
             <input
               type="radio"
               name="option"
               checked={selected === i}
-              onChange={() => setSelected(i)}
+              onChange={() => handleSelect(i)}
               disabled={checked}
               style={{ display: 'none' }}
             />
@@ -150,9 +157,7 @@ export default function Test({ deck }) {
           </label>
         ))}
       </form>
-      {!checked ? (
-        <button onClick={handleCheck} disabled={selected == null}>Check</button>
-      ) : (
+      {checked && (
         <div>
           <p className="feedback">{selected === card.correct ? 'Correct!' : 'Incorrect.'}</p>
           {card.explanation && <p>{card.explanation}</p>}
