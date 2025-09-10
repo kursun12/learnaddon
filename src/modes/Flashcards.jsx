@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function Flashcards({ deck }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const audioRef = useRef(null);
 
   const card = deck.cards[index];
 
@@ -17,6 +18,10 @@ export default function Flashcards({ deck }) {
   };
 
   const flip = () => setFlipped((f) => !f);
+  const playAudio = (e) => {
+    e.stopPropagation();
+    audioRef.current?.play();
+  };
 
   useEffect(() => {
     const handler = (e) => {
@@ -47,7 +52,28 @@ export default function Flashcards({ deck }) {
         aria-label="flashcard"
         onKeyDown={(e) => e.key === 'Enter' && flip()}
       >
-        {flipped ? card.options[card.correct] : card.question}
+        <p>{flipped ? card.options[card.correct] : card.question}</p>
+        {card.image && (
+          <img
+            src={card.image}
+            alt={card.question}
+            style={{ maxWidth: '100%', marginTop: '1rem' }}
+          />
+        )}
+        {card.audio && (
+          <div style={{ marginTop: '1rem' }}>
+            <audio ref={audioRef} src={card.audio} />
+            <button onClick={playAudio} aria-label="Play audio">
+              Play Audio
+            </button>
+          </div>
+        )}
+        {flipped && card.explanation && (
+          <p style={{ marginTop: '1rem' }}>{card.explanation}</p>
+        )}
+        {flipped && card.refs && (
+          <p style={{ marginTop: '0.5rem' }}>{card.refs}</p>
+        )}
       </div>
       <p>
         Card {index + 1} / {deck.cards.length}
