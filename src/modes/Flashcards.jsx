@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { shuffleArray } from '../util/shuffle.js';
+import './Flashcards.css';
 
 export default function Flashcards({ deck }) {
   const [order, setOrder] = useState(() => deck.cards.map((_, i) => i));
@@ -45,62 +46,53 @@ export default function Flashcards({ deck }) {
   }, []);
 
   return (
-    <div style={{ textAlign: 'center' }}>
+    <div className="flashcard-container">
       <h2>{deck.title}</h2>
       <div
-        style={{
-          border: '1px solid #ccc',
-          padding: '2rem',
-          cursor: 'pointer',
-          minHeight: '200px',
-        }}
+        className={`flashcard card ${flipped ? 'flipped' : ''}`}
         onClick={flip}
         role="button"
         tabIndex={0}
         aria-label="flashcard"
         onKeyDown={(e) => e.key === 'Enter' && flip()}
       >
-        <p>{flipped ? card.options[card.correct] : card.question}</p>
-        {card.image && (
-          <img
-            src={card.image}
-            alt={card.question}
-            style={{ maxWidth: '100%', marginTop: '1rem' }}
-          />
-        )}
-        {card.audio && (
-          <div style={{ marginTop: '1rem' }}>
-            <audio ref={audioRef} src={card.audio} />
-            <button onClick={playAudio} aria-label="Play audio">
-              Play Audio
-            </button>
+        <div className="flashcard-inner">
+          <div className="flashcard-face front">
+            <p>{card.question}</p>
+            {card.image && <img src={card.image} alt={card.question} />}
           </div>
-        )}
-        {flipped && card.explanation && (
-          <p style={{ marginTop: '1rem' }}>{card.explanation}</p>
-        )}
-        {flipped && card.refs && (
-          <p style={{ marginTop: '0.5rem' }}>{card.refs}</p>
-        )}
+          <div className="flashcard-face back">
+            <p>{card.options[card.correct]}</p>
+            {card.explanation && <p style={{ marginTop: '1rem' }}>{card.explanation}</p>}
+            {card.refs && <p style={{ marginTop: '0.5rem' }}>{card.refs}</p>}
+          </div>
+        </div>
       </div>
+      {card.audio && (
+        <div>
+          <audio ref={audioRef} src={card.audio} />
+          <button onClick={playAudio} aria-label="Play audio">Play Audio</button>
+        </div>
+      )}
       <p>
         Card {index + 1} / {deck.cards.length}
       </p>
-      <progress value={index + 1} max={deck.cards.length} aria-label="Progress" />
-      <div style={{ marginTop: '0.5rem' }}>
-        <button onClick={shuffle} aria-label="Shuffle cards" style={{ marginRight: '0.5rem' }}>
+      <progress
+        className="progress"
+        value={index + 1}
+        max={deck.cards.length}
+        aria-label="Progress"
+      />
+      <div>
+        <button onClick={shuffle} aria-label="Shuffle cards">
           Shuffle
         </button>
       </div>
-      <button onClick={prev} aria-label="Previous card">
-        Prev
-      </button>
-      <button onClick={flip} aria-label="Flip card">
-        Flip
-      </button>
-      <button onClick={next} aria-label="Next card">
-        Next
-      </button>
+      <div>
+        <button onClick={prev} aria-label="Previous card">Prev</button>
+        <button onClick={flip} aria-label="Flip card">Flip</button>
+        <button onClick={next} aria-label="Next card">Next</button>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+:root {
+  --bg-dark: #0f172a;
+  --bg-light: #f8fafc;
+  --text-dark: #f1f5f9;
+  --text-light: #0f172a;
+  --accent: linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%);
+  --radius: 12px;
+  --transition: 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+}
+
+body.light {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: inherit;
+  transition: background var(--transition), color var(--transition);
+}
+
+button:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+input, textarea {
+  font-family: inherit;
+}
