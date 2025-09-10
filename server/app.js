@@ -12,6 +12,16 @@ function createApp(db) {
     });
   });
 
+  app.get('/api/questions/random', (req, res) => {
+    const count = Math.max(parseInt(req.query.count, 10) || 1, 1);
+    db.all('SELECT * FROM questions ORDER BY RANDOM() LIMIT ?', [count], (err, rows) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.json(rows);
+    });
+  });
+
   app.get('/api/questions/:id', (req, res) => {
     db.get('SELECT * FROM questions WHERE id = ?', [req.params.id], (err, row) => {
       if (err) {
