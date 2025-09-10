@@ -1,7 +1,7 @@
 # Backlog
 
 - Implement Learn mode with adaptive mastery tracking.
+- Add Match mode with timed pairing and personal best tracking.
 - Expand Test mode with True/False and written question types plus enhanced review UI.
-- Persist progress and add shuffle/randomization across modes.
-- Improve accessibility and integrated text-to-speech playback.
-- Add metadata fields and file upload to importer.
+- Support file upload and metadata in importer.
+- Persist progress and unify shuffle/randomization across all modes.

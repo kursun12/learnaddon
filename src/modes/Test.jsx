@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { scoreTest, getIncorrectCards } from '../util/scoreTest.js';
 import { keyToIndex } from '../util/keyToIndex.js';
 
@@ -71,19 +71,19 @@ export default function Test({ deck }) {
     );
   }
 
-  const handleCheck = () => {
+  const handleCheck = useCallback(() => {
     if (selected == null) return;
     const nextResponses = [...responses];
     nextResponses[index] = selected;
     setResponses(nextResponses);
     setChecked(true);
-  };
+  }, [index, responses, selected]);
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setSelected(null);
     setChecked(false);
     setIndex((i) => i + 1);
-  };
+  }, []);
 
   const playAudio = (e) => {
     e.stopPropagation();

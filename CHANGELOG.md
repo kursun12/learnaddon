@@ -12,4 +12,6 @@
 - Test mode gains keyboard shortcuts for option selection and navigation.
 - Test mode now displays optional images, audio playback, explanations, and references.
 - Importer tests cover explanation and reference fields.
+- Test mode keyboard handler stabilized with useCallback to avoid re-binding listeners.
+- Flashcards mode adds shuffle button and progress bar for better study tracking.
 

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { shuffleArray } from '../util/shuffle.js';
 
 export default function Flashcards({ deck }) {
+  const [order, setOrder] = useState(() => deck.cards.map((_, i) => i));
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const audioRef = useRef(null);
 
-  const card = deck.cards[index];
+  const card = deck.cards[order[index]];
 
   const next = () => {
     setIndex((i) => (i + 1) % deck.cards.length);
@@ -14,6 +16,12 @@ export default function Flashcards({ deck }) {
 
   const prev = () => {
     setIndex((i) => (i - 1 + deck.cards.length) % deck.cards.length);
+    setFlipped(false);
+  };
+
+  const shuffle = () => {
+    setOrder((o) => shuffleArray(o));
+    setIndex(0);
     setFlipped(false);
   };
 
@@ -78,6 +86,12 @@ export default function Flashcards({ deck }) {
       <p>
         Card {index + 1} / {deck.cards.length}
       </p>
+      <progress value={index + 1} max={deck.cards.length} aria-label="Progress" />
+      <div style={{ marginTop: '0.5rem' }}>
+        <button onClick={shuffle} aria-label="Shuffle cards" style={{ marginRight: '0.5rem' }}>
+          Shuffle
+        </button>
+      </div>
       <button onClick={prev} aria-label="Previous card">
         Prev
       </button>
