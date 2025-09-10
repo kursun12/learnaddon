@@ -76,3 +76,21 @@ test('GET /api/questions/random?count=2 returns two random questions', async () 
   const ids = res.body.map((q) => q.id);
   expect(new Set(ids).size).toBe(2);
 });
+
+test('POST /api/questions/:id/answer returns correct true for right answer', async () => {
+  const res = await request(app)
+    .post('/api/questions/1/answer')
+    .send({ answer: 'optionA' });
+  expect(res.status).toBe(200);
+  expect(res.body.correct).toBe(true);
+  expect(res.body).toHaveProperty('explanation');
+});
+
+test('POST /api/questions/:id/answer returns correct false for wrong answer', async () => {
+  const res = await request(app)
+    .post('/api/questions/1/answer')
+    .send({ answer: 'optionB' });
+  expect(res.status).toBe(200);
+  expect(res.body.correct).toBe(false);
+  expect(res.body).toHaveProperty('explanation');
+});
