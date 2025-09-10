@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { scoreTest, getIncorrectCards } from '../util/scoreTest.js';
+import { keyToIndex } from '../util/keyToIndex.js';
 
 export default function Test({ deck }) {
   const [cards, setCards] = useState(deck.cards);
@@ -66,6 +67,28 @@ export default function Test({ deck }) {
     setChecked(false);
     setIndex((i) => i + 1);
   };
+
+  useEffect(() => {
+    const handler = (e) => {
+      const idx = keyToIndex(e.key);
+      if (!checked) {
+        if (idx >= 0 && idx < card.options.length) {
+          setSelected(idx);
+        }
+        if (e.key === 'Enter' && selected != null) {
+          e.preventDefault();
+          handleCheck();
+        }
+      } else {
+        if (e.key === 'Enter' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          handleNext();
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [checked, card.options.length, selected, handleCheck, handleNext]);
 
   return (
     <div>
