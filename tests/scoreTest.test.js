@@ -1,4 +1,4 @@
-import { scoreTest } from '../src/util/scoreTest.js';
+import { scoreTest, getIncorrectCards } from '../src/util/scoreTest.js';
 
 describe('scoreTest', () => {
   const deck = {
@@ -17,5 +17,12 @@ describe('scoreTest', () => {
   it('scores mixed answers', () => {
     const res = scoreTest(deck, [0, 0, 1]);
     expect(res).toEqual({ correct: 1, total: 3, results: [false, true, false] });
+  });
+
+  it('gets incorrect cards', () => {
+    const wrong = getIncorrectCards(deck.cards, [0, 0, 1]);
+    expect(wrong).toHaveLength(2);
+    expect(wrong[0]).toBe(deck.cards[0]);
+    expect(wrong[1]).toBe(deck.cards[2]);
   });
 });
