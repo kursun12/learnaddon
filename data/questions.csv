@@ -1,3 +1,3 @@
-id,question,optionA,optionB,optionC,optionD,correct,explanation,reference
-1,"What is the primary purpose of Microsoft Defender for Identity?","Detect identity-based threats","Prevent data loss","Manage devices","Monitor network performance","optionA","Defender for Identity focuses on detecting identity-based threats in your network.","https://learn.microsoft.com"
-2,"Which service provides centralized policy management in Microsoft 365?","Azure AD Conditional Access","Microsoft Teams","Power BI","Azure Sentinel","optionA","Conditional Access in Azure AD provides centralized policy management.","https://learn.microsoft.com"
+id,question,optionA,optionB,optionC,optionD,optionE,optionF,optionG,optionH,correct,explanation,reference,image,audio
+1,What is the primary purpose of Microsoft Defender for Identity?,Detect identity-based threats,Prevent data loss,Manage devices,Monitor network performance,,,,,optionA,Defender for Identity focuses on detecting identity-based threats in your network.,https://learn.microsoft.com,,
+2,Which service provides centralized policy management in Microsoft 365?,Azure AD Conditional Access,Microsoft Teams,Power BI,Azure Sentinel,,,,,optionA,Conditional Access in Azure AD provides centralized policy management.,https://learn.microsoft.com,,
